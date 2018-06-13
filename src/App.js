@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import './App.css';
 import Canvas from './components/canvas/canvas';
 import Tools from './components/tools';
+import ToolBtn from './components/tools/tool-btn';
 
 class App extends Component {
 
@@ -11,6 +12,7 @@ class App extends Component {
     this.state = {
       selectedTool: ""
     };
+
     this.handleToolClick = this.handleToolClick.bind(this);
   }
 
@@ -21,9 +23,16 @@ class App extends Component {
   }
 
   render() {
+
+    // Need this and click handler to have access to this component state
+    const toolset = ["line", "circle", "sq"];
+    const toolButtons = toolset.map((tool) => <ToolBtn name={tool} handleToolClick={this.handleToolClick.bind(this, tool)} selectedTool={this.state.selectedTool}/>)
+
     return (
       <div className="App">
-        <Tools handleToolClick={this.handleToolClick} selectedTool={this.state.selectedTool} />
+        <Tools>
+          {toolButtons}
+        </Tools>
         <Canvas />
       </div>
     );

@@ -1,34 +1,18 @@
 import React, { Component } from "react";
+import ToolBtn from './tool-btn';
 import '../../styles/tools.css';
 
-class Tools extends Component {
-  constructor() {
-    super()
+const Tools = (props) => {
 
-  }
+  const isActive = (tool) => {
+    return props.selectedTool === tool ? "selected" : "";
+  };
 
-  isActive(tool) {
-    return this.props.selectedTool === tool ? "selected" : "";
-  }
-
-  render() {
-
-    return (
-      <div className="tools">
-        <ul>
-          <li className={`tool ${this.isActive("line")}`} ref="line" onClick={this.props.handleToolClick.bind(this, "line")}>
-            line
-          </li>
-          <li className="tool">
-            circle
-          </li>
-          <li className="tool">
-            sq
-          </li>
-        </ul>
-      </div>
-    )
-  }
+  return (
+    <article className="tools">
+      {props.children}
+    </article>
+  )
 }
 
 export default Tools;

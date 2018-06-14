@@ -1,12 +1,7 @@
-import React, { Component } from "react";
-import ToolBtn from './tool-btn';
+import React from "react";
 import '../../styles/tools.css';
 
 const Tools = (props) => {
-
-  const isActive = (tool) => {
-    return props.selectedTool === tool ? "selected" : "";
-  };
 
   return (
     <article className="tools">

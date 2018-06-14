@@ -3,7 +3,7 @@ import React from 'react';
 const ToolBtn = (props) => {
 
   const isActive = (name) => {
-    return props.selectedTool === name ? "selected" : "";
+    return props.activeTool === name ? "selected" : "";
   };
 
   return (

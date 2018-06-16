@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import '../../styles/canvas/layer.css';
-import { findDOMNode } from 'react-dom'
 
 class Layer extends Component {
   constructor(props) {
@@ -15,11 +14,11 @@ class Layer extends Component {
     this.handleMouseDown = this.handleMouseDown.bind(this);
     this.handleMouseMove = this.handleMouseMove.bind(this);
     this.handleMouseUp = this.handleMouseUp.bind(this);
+    this.setContext = this.setContext.bind(this);
   }
 
-  componentDidMount(){
-    this.canvas = findDOMNode(this.canvasRef);
-    this.ctx = this.canvas.getContext('2d');
+  setContext(r) {
+    this.ctx = r.getContext("2d");
   }
 
   handleMouseDown(e) {
@@ -89,7 +88,7 @@ class Layer extends Component {
     return (
       <canvas
         className="layer"
-        ref={(canvas) => { this.canvasRef = canvas; }}
+        ref={this.setContext}
         onMouseMove={this.handleMouseMove}
         onMouseDown={this.handleMouseDown}
         onMouseUp={this.handleMouseUp}

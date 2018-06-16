@@ -25,7 +25,7 @@ class App extends Component {
   render() {
 
     // Need this and click handler to have access to this component state
-    const toolset = ["line", "circle", "sq"];
+    const toolset = ["line", "pencil", "erase"];
     const toolButtons = toolset.map((tool) => <ToolBtn name={tool} key={tool} handleToolClick={this.handleToolClick.bind(this, tool)} activeTool={this.state.activeTool}/>)
 
     return (

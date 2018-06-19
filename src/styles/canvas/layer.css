@@ -1,3 +1,26 @@
+.layer-wrap {
+  position: relative; 
+  margin: auto;
+}
 .layer {
-    border: 1px solid grey;
+  border: 1px solid grey;
+
+  position: absolute;
+  top: 0;
+  left: 0;
+  /* 
+  // height and width attrs mess up canvas mouse handlers
+  width: 300px;
+  height: 400px; 
+  
+  */
+  
+}
+.preview {
+  background: red;
+  opacity: 0.5;
+  position: absolute;
+  
+  top: 0;
+  left: 0;
 }

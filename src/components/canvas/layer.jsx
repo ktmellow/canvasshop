@@ -14,24 +14,55 @@ class Layer extends Component {
     this.handleMouseDown = this.handleMouseDown.bind(this);
     this.handleMouseMove = this.handleMouseMove.bind(this);
     this.handleMouseUp = this.handleMouseUp.bind(this);
-    this.setContext = this.setContext.bind(this);
+    this.mainContext = this.mainContext.bind(this);
+    this.previewContext = this.previewContext.bind(this);
+    this.relMouseCoords = this.relMouseCoords.bind(this);
   }
 
-  setContext(r) {
+  relMouseCoords(event) {
+    var totalOffsetX = 0;
+    var totalOffsetY = 0;
+    var canvasX = 0;
+    var canvasY = 0;
+    var currentElement = event.target;
+
+    do {
+      totalOffsetX += currentElement.offsetLeft - currentElement.scrollLeft;
+      totalOffsetY += currentElement.offsetTop - currentElement.scrollTop;
+    }
+    while (currentElement = currentElement.offsetParent)
+
+    canvasX = event.pageX - totalOffsetX;
+    canvasY = event.pageY - totalOffsetY;
+
+    return { x: canvasX, y: canvasY }
+  }
+
+  mainContext(r) {
+    this.layerCanvas = r;
     this.ctx = r.getContext("2d");
+
+    this.ctx.canvas.width = this.props.width;
+    this.ctx.canvas.height = this.props.height;
+  }
+
+  previewContext(r) {
+    this.previewCanvas = r;
+    this.prv = r.getContext("2d");
+
+
+    this.prv.canvas.width = this.props.width;
+    this.prv.canvas.height = this.props.height;
   }
 
   handleMouseDown(e) {
-    // should call appropriate tool function
-      // paintbrush should record all mouse downs and render (no mouseup)
-      // line should record mousedown point (and mouseup)
-      // tool helpers should be put in separate folder
     // e.persist()
-  
+
     this.ctx.beginPath();
 
     function moveTo(e, component) {
-      component.ctx.moveTo(e.clientX - e.target.offsetLeft, e.clientY - e.target.offsetTop);
+      const coords = component.relMouseCoords(e);
+      component.ctx.moveTo(coords.x, coords.y);
     }
 
     moveTo(e, this);
@@ -42,15 +73,21 @@ class Layer extends Component {
   }
 
   handleMouseMove(e) {
-    function lineTo(e, component) {
-      component.ctx.lineTo(e.clientX - e.target.offsetLeft, e.clientY - e.target.offsetTop);
-    }
+    if (!this.state.mouse.active) return;
 
-    switch(this.props.activeTool) {
+    function lineTo(e, component) {
+      const coords = component.relMouseCoords(e);
+      component.ctx.lineTo(coords.x, coords.y);
+    }
+    function stroke(component) {
+      component.ctx.stroke();
+    }
+    switch (this.props.activeTool) {
       case 'line':
         return;
       default:
         lineTo(e, this);
+        stroke(this);
         break;
     }
 
@@ -60,7 +97,8 @@ class Layer extends Component {
     if (!this.state.mouse.active) return;
 
     function lineTo(e, component) {
-      component.ctx.lineTo(e.clientX - e.target.offsetLeft, e.clientY - e.target.offsetTop);
+      const coords = component.relMouseCoords(e);
+      component.ctx.lineTo(coords.x, coords.y);
     }
 
     function stroke(component) {
@@ -68,15 +106,6 @@ class Layer extends Component {
     }
 
     lineTo(e, this);
-
-    // if not enough tool conditions, use if statement
-    // switch(this.props.activeTool) {
-    //   case 'path':
-    //     // close path
-    //     break;
-    //   default:
-    //     break;
-    // }
     stroke(this);
 
     const newState = this.state;
@@ -86,14 +115,29 @@ class Layer extends Component {
 
   render() {
     return (
-      <canvas
-        className="layer"
-        ref={this.setContext}
+      <section
+        className="layer-wrap"
         onMouseMove={this.handleMouseMove}
         onMouseDown={this.handleMouseDown}
         onMouseUp={this.handleMouseUp}
-        >
-      </canvas>
+        style={
+          {
+            width: `${this.props.width}px`,
+            height: `${this.props.height}px`
+          }
+        }
+      >
+        <canvas
+          className="preview layer"
+          ref={this.previewContext}
+        />
+        <canvas
+          className="layer"
+          ref={this.mainContext}
+        />
+
+
+      </section>
     );
   }
 }

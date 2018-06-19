@@ -33,7 +33,7 @@ class App extends Component {
         <Tools>
           {toolButtons}
         </Tools>
-        <Layer activeTool={this.state.activeTool}/>
+        <Layer activeTool={this.state.activeTool} width="400" height="300" />
       </div>
     );
   }

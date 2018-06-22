@@ -1,5 +1,5 @@
-const moveTo = (component, coords) => {
-  component.ctx.moveTo(coords.x, coords.y);
+const moveTo = (context, coords) => {
+  context.moveTo(coords.x, coords.y);
 };
 
 export default moveTo;

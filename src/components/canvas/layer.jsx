@@ -1,10 +1,12 @@
 import React, { Component } from 'react';
 import '../../styles/canvas/layer.css';
 
+// Drawing helpers
 import mouseCoords from "../../helpers/mouse-coords";
 import lineTo from "../../helpers/line-to";
 import moveTo from "../../helpers/move-to";
 import stroke from "../../helpers/stroke";
+import clearLayer from "../../helpers/clear-layer";
 
 class Layer extends Component {
   constructor(props) {
@@ -12,8 +14,13 @@ class Layer extends Component {
 
     this.state = {
       mouse: {
-        active: false
-      }
+        active: false,
+        prev: {
+          down: null,
+          move: null
+        }
+      },
+      color: "green"
     }
 
     this.handleMouseDown = this.handleMouseDown.bind(this);
@@ -44,10 +51,18 @@ class Layer extends Component {
 
     this.ctx.beginPath();
 
-    moveTo(this, mouseCoords(e));
+    switch (this.props.activeTool) {
+      case 'line':
+        moveTo(this.ctx, mouseCoords(e));
+        break;
+      default:
+        break;
+    }
 
     const newState = this.state;
     newState.mouse.active = true;
+    newState.mouse.prev.down = mouseCoords(e);
+    newState.mouse.prev.move = mouseCoords(e);
     this.setState(Object.assign({}, newState));
   }
 
@@ -56,10 +71,22 @@ class Layer extends Component {
 
     switch (this.props.activeTool) {
       case 'line':
+        // erase old line
+        clearLayer(this.prv);
+
+        // create new line
+        moveTo(this.prv, this.state.mouse.prev.down);
+        lineTo(this.prv, mouseCoords(e));
+        stroke(this.prv, this.state.color);
+        // debugger
+
+        const newState = this.state;
+        newState.mouse.prev.move = mouseCoords(e);
+        this.setState(Object.assign({}, newState));
         return;
       default:
-        lineTo(this, mouseCoords(e));
-        stroke(this);
+        lineTo(this.ctx, mouseCoords(e));
+        stroke(this.ctx, this.state.color);
         break;
     }
   }
@@ -67,8 +94,15 @@ class Layer extends Component {
   handleMouseUp(e) {
     if (!this.state.mouse.active) return;
 
-    lineTo(this, mouseCoords(e));
-    stroke(this);
+    switch (this.props.activeTool) {
+      case 'line':
+        moveTo(this.ctx, this.state.mouse.prev.down);
+        break;
+      default:
+        break;
+    }
+    lineTo(this.ctx, mouseCoords(e));
+    stroke(this.ctx, this.state.color);
 
     const newState = this.state;
     newState.mouse.active = false;

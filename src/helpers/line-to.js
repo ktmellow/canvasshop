@@ -1,5 +1,5 @@
-const lineTo = (component, coords) => {
-  component.ctx.lineTo(coords.x, coords.y);
+const lineTo = (context, coords) => {
+  context.lineTo(coords.x, coords.y);
 };
 
 export default lineTo;

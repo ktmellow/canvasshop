@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import '../../styles/canvas/layer.css';
 
+import mouseCoords from "../../helpers/mouse-coords";
+
 class Layer extends Component {
   constructor(props) {
     super(props);
@@ -16,26 +18,6 @@ class Layer extends Component {
     this.handleMouseUp = this.handleMouseUp.bind(this);
     this.mainContext = this.mainContext.bind(this);
     this.previewContext = this.previewContext.bind(this);
-    this.relMouseCoords = this.relMouseCoords.bind(this);
-  }
-
-  relMouseCoords(event) {
-    var totalOffsetX = 0;
-    var totalOffsetY = 0;
-    var canvasX = 0;
-    var canvasY = 0;
-    var currentElement = event.target;
-
-    do {
-      totalOffsetX += currentElement.offsetLeft - currentElement.scrollLeft;
-      totalOffsetY += currentElement.offsetTop - currentElement.scrollTop;
-    }
-    while (currentElement = currentElement.offsetParent)
-
-    canvasX = event.pageX - totalOffsetX;
-    canvasY = event.pageY - totalOffsetY;
-
-    return { x: canvasX, y: canvasY }
   }
 
   mainContext(r) {
@@ -61,7 +43,7 @@ class Layer extends Component {
     this.ctx.beginPath();
 
     function moveTo(e, component) {
-      const coords = component.relMouseCoords(e);
+      const coords = mouseCoords(e);
       component.ctx.moveTo(coords.x, coords.y);
     }
 
@@ -76,7 +58,7 @@ class Layer extends Component {
     if (!this.state.mouse.active) return;
 
     function lineTo(e, component) {
-      const coords = component.relMouseCoords(e);
+      const coords = mouseCoords(e);
       component.ctx.lineTo(coords.x, coords.y);
     }
     function stroke(component) {
@@ -97,7 +79,7 @@ class Layer extends Component {
     if (!this.state.mouse.active) return;
 
     function lineTo(e, component) {
-      const coords = component.relMouseCoords(e);
+      const coords = mouseCoords(e);
       component.ctx.lineTo(coords.x, coords.y);
     }
 
@@ -135,8 +117,6 @@ class Layer extends Component {
           className="layer"
           ref={this.mainContext}
         />
-
-
       </section>
     );
   }

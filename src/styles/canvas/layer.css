@@ -9,10 +9,9 @@
   top: 0;
   left: 0;
   /* 
-  // height and width attrs mess up canvas mouse handlers
+  height and width attrs mess up canvas mouse handlers
   width: 300px;
   height: 400px; 
-  
   */
   
 }
@@ -20,7 +19,7 @@
   background: red;
   opacity: 0.5;
   position: absolute;
-  
+
   top: 0;
   left: 0;
 }

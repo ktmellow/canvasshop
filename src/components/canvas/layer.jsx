@@ -2,6 +2,9 @@ import React, { Component } from 'react';
 import '../../styles/canvas/layer.css';
 
 import mouseCoords from "../../helpers/mouse-coords";
+import lineTo from "../../helpers/line-to";
+import moveTo from "../../helpers/move-to";
+import stroke from "../../helpers/stroke";
 
 class Layer extends Component {
   constructor(props) {
@@ -32,7 +35,6 @@ class Layer extends Component {
     this.previewCanvas = r;
     this.prv = r.getContext("2d");
 
-
     this.prv.canvas.width = this.props.width;
     this.prv.canvas.height = this.props.height;
   }
@@ -42,12 +44,7 @@ class Layer extends Component {
 
     this.ctx.beginPath();
 
-    function moveTo(e, component) {
-      const coords = mouseCoords(e);
-      component.ctx.moveTo(coords.x, coords.y);
-    }
-
-    moveTo(e, this);
+    moveTo(this, mouseCoords(e));
 
     const newState = this.state;
     newState.mouse.active = true;
@@ -57,37 +54,20 @@ class Layer extends Component {
   handleMouseMove(e) {
     if (!this.state.mouse.active) return;
 
-    function lineTo(e, component) {
-      const coords = mouseCoords(e);
-      component.ctx.lineTo(coords.x, coords.y);
-    }
-    function stroke(component) {
-      component.ctx.stroke();
-    }
     switch (this.props.activeTool) {
       case 'line':
         return;
       default:
-        lineTo(e, this);
+        lineTo(this, mouseCoords(e));
         stroke(this);
         break;
     }
-
   }
 
   handleMouseUp(e) {
     if (!this.state.mouse.active) return;
 
-    function lineTo(e, component) {
-      const coords = mouseCoords(e);
-      component.ctx.lineTo(coords.x, coords.y);
-    }
-
-    function stroke(component) {
-      component.ctx.stroke();
-    }
-
-    lineTo(e, this);
+    lineTo(this, mouseCoords(e));
     stroke(this);
 
     const newState = this.state;

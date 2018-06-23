@@ -20,7 +20,7 @@ class Layer extends Component {
           move: null
         }
       },
-      color: "aquamarine"
+      color: "turqouise"
     }
 
     this.handleMouseDown = this.handleMouseDown.bind(this);

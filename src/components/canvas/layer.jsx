@@ -20,7 +20,7 @@ class Layer extends Component {
           move: null
         }
       },
-      color: "green"
+      color: "aquamarine"
     }
 
     this.handleMouseDown = this.handleMouseDown.bind(this);
@@ -48,14 +48,16 @@ class Layer extends Component {
 
   handleMouseDown(e) {
     this.ctx.beginPath();
+    moveTo(this.ctx, mouseCoords(e));
 
-    switch (this.props.activeTool) {
-      case 'line':
-        moveTo(this.ctx, mouseCoords(e));
-        break;
-      default:
-        break;
-    }
+
+    // switch (this.props.activeTool) {
+    //   case 'line':
+    //     moveTo(this.ctx, mouseCoords(e));
+    //     break;
+    //   default:
+    //     break;
+    // }
 
     const newState = this.state;
     newState.mouse.active = true;
@@ -81,10 +83,15 @@ class Layer extends Component {
         newState.mouse.prev.move = mouseCoords(e);
         this.setState(Object.assign({}, newState));
         return;
-      default:
+      case 'pencil':
         lineTo(this.ctx, mouseCoords(e));
         stroke(this.ctx, this.state.color);
         break;
+      case 'path':
+        lineTo(this.ctx, mouseCoords(e));
+        break;
+      default:
+        console.log("mousemove error!");
     }
   }
 
@@ -96,12 +103,23 @@ class Layer extends Component {
         // erase old line
         clearLayer(this.preview);
         moveTo(this.ctx, this.state.mouse.prev.down);
+        lineTo(this.ctx, mouseCoords(e));
+        stroke(this.ctx, this.state.color);
         break;
+      case 'pencil':
+        lineTo(this.ctx, mouseCoords(e));
+        stroke(this.ctx, this.state.color);
+        break;
+      case 'path':
+        lineTo(this.ctx, mouseCoords(e));
+        this.ctx.closePath();
+        this.ctx.fillStyle = this.state.color;
+        this.ctx.fill();
       default:
+        lineTo(this.ctx, mouseCoords(e));
+        stroke(this.ctx, this.state.color);
         break;
     }
-    lineTo(this.ctx, mouseCoords(e));
-    stroke(this.ctx, this.state.color);
 
     const newState = this.state;
     newState.mouse.active = false;

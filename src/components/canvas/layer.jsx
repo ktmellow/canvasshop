@@ -40,15 +40,13 @@ class Layer extends Component {
 
   previewContext(r) {
     this.previewCanvas = r;
-    this.prv = r.getContext("2d");
+    this.preview = r.getContext("2d");
 
-    this.prv.canvas.width = this.props.width;
-    this.prv.canvas.height = this.props.height;
+    this.preview.canvas.width = this.props.width;
+    this.preview.canvas.height = this.props.height;
   }
 
   handleMouseDown(e) {
-    // e.persist()
-
     this.ctx.beginPath();
 
     switch (this.props.activeTool) {
@@ -72,13 +70,12 @@ class Layer extends Component {
     switch (this.props.activeTool) {
       case 'line':
         // erase old line
-        clearLayer(this.prv);
+        clearLayer(this.preview);
 
         // create new line
-        moveTo(this.prv, this.state.mouse.prev.down);
-        lineTo(this.prv, mouseCoords(e));
-        stroke(this.prv, this.state.color);
-        // debugger
+        moveTo(this.preview, this.state.mouse.prev.down);
+        lineTo(this.preview, mouseCoords(e));
+        stroke(this.preview, this.state.color);
 
         const newState = this.state;
         newState.mouse.prev.move = mouseCoords(e);
@@ -96,6 +93,8 @@ class Layer extends Component {
 
     switch (this.props.activeTool) {
       case 'line':
+        // erase old line
+        clearLayer(this.preview);
         moveTo(this.ctx, this.state.mouse.prev.down);
         break;
       default:

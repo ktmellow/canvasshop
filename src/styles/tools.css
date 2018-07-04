@@ -4,6 +4,6 @@
   padding: 10px;
 }
 
-.tool.selected {
+.selected {
   border: 1px solid red;
 }

@@ -3,6 +3,7 @@ import './App.css';
 import Layer from './components/canvas/layer';
 import Tools from './components/tools';
 import ToolBtn from './components/tools/tool-btn';
+import Eraser from './components/tools/eraser';
 
 class App extends Component {
 
@@ -11,16 +12,24 @@ class App extends Component {
     
     this.state = {
       activeTool: "line",
-      color: "fff"
+      color: "fff",
+      erase: false
     };
 
     this.handleToolClick = this.handleToolClick.bind(this);
     this.handleColor = this.handleColor.bind(this);
+    this.handleErase = this.handleErase.bind(this);
   }
 
   handleToolClick(toolBtn) {
     const newState = this.state;
     newState.activeTool = toolBtn;
+    this.setState(Object.assign({}, newState));
+  }
+
+  handleErase() {
+    const newState = this.state;
+    newState.erase = !this.state.erase;
     this.setState(Object.assign({}, newState));
   }
 
@@ -31,7 +40,7 @@ class App extends Component {
   }
 
   render() {
-    const { color, activeTool } = this.state;
+    const { activeTool, color, erase } = this.state;
 
     // Need this and click handler to have access to this component state
     const toolset = ["line", "pencil", "path"];
@@ -40,10 +49,11 @@ class App extends Component {
     return (
       <div className="App">
         <Tools>
+          <Eraser handleErase={this.handleErase} erase={erase}/>
           <input type="color" onChange={this.handleColor} />
           {toolButtons}
         </Tools>
-        <Layer color={color} activeTool={activeTool} width="400" height="300" />
+        <Layer color={color} activeTool={activeTool} erase={erase} width="400" height="300" />
       </div>
     );
   }

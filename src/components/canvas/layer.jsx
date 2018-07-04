@@ -49,15 +49,6 @@ class Layer extends Component {
     this.ctx.beginPath();
     moveTo(this.ctx, mouseCoords(e));
 
-
-    // switch (this.props.activeTool) {
-    //   case 'line':
-    //     moveTo(this.ctx, mouseCoords(e));
-    //     break;
-    //   default:
-    //     break;
-    // }
-
     const newState = this.state;
     newState.mouse.active = true;
     newState.mouse.prev.down = mouseCoords(e);
@@ -76,7 +67,7 @@ class Layer extends Component {
         // create new line
         moveTo(this.preview, this.state.mouse.prev.down);
         lineTo(this.preview, mouseCoords(e));
-        stroke(this.preview, this.props.color);
+        stroke(this.preview, this.props.color,this.props.erase);
 
         const newState = this.state;
         newState.mouse.prev.move = mouseCoords(e);
@@ -84,7 +75,7 @@ class Layer extends Component {
         return;
       case 'pencil':
         lineTo(this.ctx, mouseCoords(e));
-        stroke(this.ctx, this.props.color);
+        stroke(this.ctx, this.props.color, this.props.erase);
         break;
       case 'path':
         lineTo(this.ctx, mouseCoords(e));
@@ -103,11 +94,11 @@ class Layer extends Component {
         clearLayer(this.preview);
         moveTo(this.ctx, this.state.mouse.prev.down);
         lineTo(this.ctx, mouseCoords(e));
-        stroke(this.ctx, this.props.color);
+        stroke(this.ctx, this.props.color, this.props.erase);
         break;
       case 'pencil':
         lineTo(this.ctx, mouseCoords(e));
-        stroke(this.ctx, this.props.color);
+        stroke(this.ctx, this.props.color, this.props.erase);
         break;
       case 'path':
         lineTo(this.ctx, mouseCoords(e));
@@ -116,7 +107,7 @@ class Layer extends Component {
         this.ctx.fill();
       default:
         lineTo(this.ctx, mouseCoords(e));
-        stroke(this.ctx, this.props.color);
+        stroke(this.ctx, this.props.color, this.props.erase);
         break;
     }
 

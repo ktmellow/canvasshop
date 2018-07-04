@@ -10,10 +10,12 @@ class App extends Component {
     super();
     
     this.state = {
-      activeTool: "line"
+      activeTool: "line",
+      color: "fff"
     };
 
     this.handleToolClick = this.handleToolClick.bind(this);
+    this.handleColor = this.handleColor.bind(this);
   }
 
   handleToolClick(toolBtn) {
@@ -22,7 +24,14 @@ class App extends Component {
     this.setState(Object.assign({}, newState));
   }
 
+  handleColor(e) {
+    const newState = this.state;
+    newState.color = e.target.value;
+    this.setState(Object.assign({}, newState));
+  }
+
   render() {
+    const { color, activeTool } = this.state;
 
     // Need this and click handler to have access to this component state
     const toolset = ["line", "pencil", "path"];
@@ -31,9 +40,10 @@ class App extends Component {
     return (
       <div className="App">
         <Tools>
+          <input type="color" onChange={this.handleColor} />
           {toolButtons}
         </Tools>
-        <Layer activeTool={this.state.activeTool} width="400" height="300" />
+        <Layer color={color} activeTool={activeTool} width="400" height="300" />
       </div>
     );
   }

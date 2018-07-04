@@ -9,10 +9,10 @@ const mouseCoords = (event) => {
     totalOffsetX += currentElement.offsetLeft - currentElement.scrollLeft;
     totalOffsetY += currentElement.offsetTop - currentElement.scrollTop;
   }
-  while (currentElement = currentElement.offsetParent)
-  
-  canvasX = event.pageX - totalOffsetX;
-  canvasY = event.pageY - totalOffsetY;
+  while (currentElement = currentElement.offsetParent) {
+    canvasX = event.pageX - totalOffsetX;
+    canvasY = event.pageY - totalOffsetY;
+  }
   
   return { x: canvasX, y: canvasY }
 };

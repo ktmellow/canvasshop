@@ -19,8 +19,7 @@ class Layer extends Component {
           down: null,
           move: null
         }
-      },
-      color: "turqouise"
+      }
     }
 
     this.handleMouseDown = this.handleMouseDown.bind(this);
@@ -77,7 +76,7 @@ class Layer extends Component {
         // create new line
         moveTo(this.preview, this.state.mouse.prev.down);
         lineTo(this.preview, mouseCoords(e));
-        stroke(this.preview, this.state.color);
+        stroke(this.preview, this.props.color);
 
         const newState = this.state;
         newState.mouse.prev.move = mouseCoords(e);
@@ -85,7 +84,7 @@ class Layer extends Component {
         return;
       case 'pencil':
         lineTo(this.ctx, mouseCoords(e));
-        stroke(this.ctx, this.state.color);
+        stroke(this.ctx, this.props.color);
         break;
       case 'path':
         lineTo(this.ctx, mouseCoords(e));
@@ -104,20 +103,20 @@ class Layer extends Component {
         clearLayer(this.preview);
         moveTo(this.ctx, this.state.mouse.prev.down);
         lineTo(this.ctx, mouseCoords(e));
-        stroke(this.ctx, this.state.color);
+        stroke(this.ctx, this.props.color);
         break;
       case 'pencil':
         lineTo(this.ctx, mouseCoords(e));
-        stroke(this.ctx, this.state.color);
+        stroke(this.ctx, this.props.color);
         break;
       case 'path':
         lineTo(this.ctx, mouseCoords(e));
         this.ctx.closePath();
-        this.ctx.fillStyle = this.state.color;
+        this.ctx.fillStyle = this.props.color;
         this.ctx.fill();
       default:
         lineTo(this.ctx, mouseCoords(e));
-        stroke(this.ctx, this.state.color);
+        stroke(this.ctx, this.props.color);
         break;
     }
 

@@ -67,7 +67,7 @@ class Layer extends Component {
         // create new line
         moveTo(this.preview, this.state.mouse.prev.down);
         lineTo(this.preview, mouseCoords(e));
-        stroke(this.preview, this.props.color,this.props.erase);
+        stroke(this.preview, this.props.color, this.props.erase);
 
         const newState = this.state;
         newState.mouse.prev.move = mouseCoords(e);
@@ -78,6 +78,8 @@ class Layer extends Component {
         stroke(this.ctx, this.props.color, this.props.erase);
         break;
       case 'path':
+        lineTo(this.preview, mouseCoords(e));
+        stroke(this.preview, this.props.color, this.props.erase);
         lineTo(this.ctx, mouseCoords(e));
         break;
       default:
@@ -101,6 +103,7 @@ class Layer extends Component {
         stroke(this.ctx, this.props.color, this.props.erase);
         break;
       case 'path':
+        clearLayer(this.preview);
         lineTo(this.ctx, mouseCoords(e));
         this.ctx.closePath();
         this.ctx.fillStyle = this.props.color;

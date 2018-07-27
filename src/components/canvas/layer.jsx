@@ -78,9 +78,8 @@ class Layer extends Component {
         stroke(this.ctx, this.props.color, this.props.erase);
         break;
       case 'path':
-        lineTo(this.preview, mouseCoords(e));
-        stroke(this.preview, this.props.color, this.props.erase);
         lineTo(this.ctx, mouseCoords(e));
+        stroke(this.ctx, this.props.color, this.props.erase);
         break;
       default:
         console.log("mousemove error!");
@@ -97,20 +96,28 @@ class Layer extends Component {
         moveTo(this.ctx, this.state.mouse.prev.down);
         lineTo(this.ctx, mouseCoords(e));
         stroke(this.ctx, this.props.color, this.props.erase);
+        this.ctx.restore();
         break;
       case 'pencil':
         lineTo(this.ctx, mouseCoords(e));
         stroke(this.ctx, this.props.color, this.props.erase);
+        this.ctx.restore();
         break;
       case 'path':
-        clearLayer(this.preview);
         lineTo(this.ctx, mouseCoords(e));
+        if(this.props.erase) {
+          this.ctx.globalCompositeOperation = "destination-out";
+        } else {
+          this.ctx.fillStyle = this.props.color;
+        }
         this.ctx.closePath();
-        this.ctx.fillStyle = this.props.color;
         this.ctx.fill();
+        this.ctx.restore();
+        break;
       default:
         lineTo(this.ctx, mouseCoords(e));
         stroke(this.ctx, this.props.color, this.props.erase);
+        console.log("active tool error!")
         break;
     }
 

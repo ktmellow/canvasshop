@@ -67,7 +67,7 @@ class Layer extends Component {
         // create new line
         moveTo(this.preview, this.state.mouse.prev.down);
         lineTo(this.preview, mouseCoords(e));
-        stroke(this.preview, this.props.color, this.props.erase);
+        stroke(this.preview, this.props.color, this.props.erase, this.props.thickness);
 
         const newState = this.state;
         newState.mouse.prev.move = mouseCoords(e);
@@ -75,11 +75,11 @@ class Layer extends Component {
         return;
       case 'pencil':
         lineTo(this.ctx, mouseCoords(e));
-        stroke(this.ctx, this.props.color, this.props.erase);
+        stroke(this.ctx, this.props.color, this.props.erase, this.props.thickness);
         break;
       case 'path':
         lineTo(this.ctx, mouseCoords(e));
-        stroke(this.ctx, this.props.color, this.props.erase);
+        stroke(this.ctx, this.props.color, this.props.erase, this.props.thickness);
         break;
       default:
         console.log("mousemove error!");
@@ -95,12 +95,12 @@ class Layer extends Component {
         clearLayer(this.preview);
         moveTo(this.ctx, this.state.mouse.prev.down);
         lineTo(this.ctx, mouseCoords(e));
-        stroke(this.ctx, this.props.color, this.props.erase);
+        stroke(this.ctx, this.props.color, this.props.erase, this.props.thickness);
         this.ctx.restore();
         break;
       case 'pencil':
         lineTo(this.ctx, mouseCoords(e));
-        stroke(this.ctx, this.props.color, this.props.erase);
+        stroke(this.ctx, this.props.color, this.props.erase, this.props.thickness);
         this.ctx.restore();
         break;
       case 'path':
@@ -116,7 +116,7 @@ class Layer extends Component {
         break;
       default:
         lineTo(this.ctx, mouseCoords(e));
-        stroke(this.ctx, this.props.color, this.props.erase);
+        stroke(this.ctx, this.props.color, this.props.erase, this.props.thickness);
         console.log("active tool error!")
         break;
     }

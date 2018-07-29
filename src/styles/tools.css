@@ -7,3 +7,11 @@
 .selected {
   border: 1px solid red;
 }
+
+.thickness {
+  display: inline-block;
+}
+
+.thickness-number {
+  width: 40px;
+}
